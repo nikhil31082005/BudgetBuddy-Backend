@@ -29,10 +29,22 @@ cloudinary.config({
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",  // Local frontend
+  "https://your-frontend-domain.com"  // Deployed frontend
+];
+
 const corsOptions = {
-    origin: process.env.CORS_URL,
-    credentials: true,
+  origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {  // Remove trailing slash
+          callback(null, true);
+      } else {
+          callback(new Error("Not allowed by CORS"));
+      }
+  },
+  credentials: true, // Allow cookies & authentication headers
 };
+
 app.use(cors(corsOptions));
 
 
