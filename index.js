@@ -31,7 +31,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",  // Local frontend
-  "https://your-frontend-domain.com"  // Deployed frontend
+  "https://budgetbuddynew.onrender.com"  // Deployed frontend
 ];
 
 const corsOptions = {
