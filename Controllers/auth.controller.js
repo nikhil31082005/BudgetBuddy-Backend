@@ -55,6 +55,7 @@ export const signup = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
+            domain: ".onrender.com",
             expires: new Date(Date.now() + 3600000), // expires in 1 hour
             sameSite: 'strict',
         });
@@ -90,6 +91,7 @@ export const login = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
+            domain: ".onrender.com",
             expires: new Date(Date.now() + 3600000), // expires in 1 hour
             sameSite: 'strict',
         });
@@ -108,6 +110,7 @@ export const logout = (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
+        domain: ".onrender.com",
         sameSite: 'strict',
     });
     res.status(200).json({ message: "Logout successful" });
