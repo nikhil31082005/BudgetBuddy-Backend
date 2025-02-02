@@ -49,16 +49,16 @@ export const signup = async (req, res) => {
 
         // Generate JWT
         const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: '1h' });
-        console.log(token);
+        // console.log(token);
 
         // Set token in HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, // Set to false for localhost (no HTTPS)
-            sameSite: "lax", // Set this to "lax" or "strict"
-            maxAge: 60 * 60 * 1000, // 1 hour
+            secure: process.env.NODE_ENV === 'production',
+            expires: new Date(Date.now() + 3600000), // expires in 1 hour
+            sameSite: 'strict',
         });
-        
+
 
         res.status(201).json({ token, message: 'User registered successfully', user: newUser });
     } catch (error) {
@@ -89,11 +89,11 @@ export const login = async (req, res) => {
         // Set token in HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, // Set to false for localhost (no HTTPS)
-            sameSite: "lax", // Set this to "lax" or "strict"
-            maxAge: 60 * 60 * 1000, // 1 hour
+            secure: process.env.NODE_ENV === 'production',
+            expires: new Date(Date.now() + 3600000), // expires in 1 hour
+            sameSite: 'strict',
         });
-        
+
 
         res.status(200).json({ token, message: 'Login successful', user: user });
     } catch (error) {
@@ -107,8 +107,8 @@ export const logout = (req, res) => {
     // Clear the 'token' cookie
     res.clearCookie("token", {
         httpOnly: true,
-        secure: false,  // Set to true in production with HTTPS
-        sameSite: "lax"
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
     });
     res.status(200).json({ message: "Logout successful" });
 };
@@ -123,7 +123,7 @@ export const getMe = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        
+
         // Return user data excluding sensitive info (like password)
         const userData = {
             _id: user._id,
