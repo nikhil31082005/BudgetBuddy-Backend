@@ -1,11 +1,11 @@
 import User from '../Models/user.model.js';
-import bcrypt from 'bcrypt.js';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();  // Ensure environment variables are loaded
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Signup Controller
 export const signup = async (req, res) => {
