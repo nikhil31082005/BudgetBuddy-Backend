@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 export const authenticateJWT = async (req, res, next) => {
     // console.log(req.cookies);
-    const token = req.cookies.token;
+    const token = await req.cookies.token;
     
     if (!token) { 
         return res.status(401).json({ message: 'Access Denied: No token provided' });
