@@ -1,5 +1,5 @@
 import User from '../Models/user.model.js';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -54,9 +54,10 @@ export const signup = async (req, res) => {
         // Set token in HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, // Set to false for localhost (no HTTPS)
-            sameSite: "lax", // Set this to "lax" or "strict"
-            maxAge: 60 * 60 * 1000, // 1 hour
+            secure: true, // MUST be true for production
+            sameSite: "none", // MUST be "none" for cross-origin requests
+            maxAge: 60 * 60 * 1000, // 1 hour (adjust as needed)
+            // domain: '.your-frontend-domain.com' // Optional, but can be crucial depending on your setup
         });
         
 
@@ -89,9 +90,10 @@ export const login = async (req, res) => {
         // Set token in HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, // Set to false for localhost (no HTTPS)
-            sameSite: "lax", // Set this to "lax" or "strict"
-            maxAge: 60 * 60 * 1000, // 1 hour
+            secure: true, // MUST be true for production
+            sameSite: "none", // MUST be "none" for cross-origin requests
+            maxAge: 60 * 60 * 1000, // 1 hour (adjust as needed)
+            // domain: '.your-frontend-domain.com' // Optional, but can be crucial depending on your setup
         });
         
 
@@ -107,8 +109,9 @@ export const logout = (req, res) => {
     // Clear the 'token' cookie
     res.clearCookie("token", {
         httpOnly: true,
-        secure: false,  // Set to true in production with HTTPS
-        sameSite: "lax"
+        secure: true, // MUST be true in production
+        sameSite: "none" // MUST be "none" in production for cross-origin scenarios
+        // domain: '.your-frontend-domain.com' // Include only if you set it when creating the cookie
     });
     res.status(200).json({ message: "Logout successful" });
 };
